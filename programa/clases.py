@@ -24,5 +24,6 @@ class dataFrameManager:
 
 
 class dataCleaner:
-    def transCategoricalData(self, vector_vals):
-        return LabelEncoder().fit_transform(vector_vals)
+    def transCategoricalData(self, matrix_vals, index):
+        matrix_vals = LabelEncoder().fit_transform(matrix_vals[:,index])
+        return matrix_vals

@@ -30,7 +30,9 @@ import pandas as pd
 
 archivo = dataFrameManager()
 cleaner = dataCleaner()
-archivo.setIndependentValues(cleaner.transCategoricalData(archivo.getIndependentValues()))
+
+archivo.setIndependentValues(cleaner.transCategoricalData(archivo.getIndependentValues(),0))
+archivo.setIndependentValues(cleaner.transCategoricalData(archivo.getIndependentValues(),1))
 
 print(archivo.getIndependentValues())
 print(archivo.getDependentValues())
