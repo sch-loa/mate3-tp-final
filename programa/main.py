@@ -25,8 +25,12 @@ Hecho por Loana Abril Schleich Garcia, entregado el dia xx/11/22.
 
 """
 from clases import dataFrameManager
+from clases import dataCleaner
 import pandas as pd
 
-archivo = dataFrameManager("../datos/BaseUnificadaEstaciones.csv")
+archivo = dataFrameManager()
+cleaner = dataCleaner()
+archivo.setIndependentValues(cleaner.transCategoricalData(archivo.getIndependentValues()))
 
-print(archivo.dF.isnull().values.any())
+print(archivo.getIndependentValues())
+print(archivo.getDependentValues())
