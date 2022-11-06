@@ -24,15 +24,16 @@ Hecho por Loana Abril Schleich Garcia, entregado el dia xx/11/22.
    
 
 """
-from clases import dataFrameManager
-from clases import dataCleaner
-import pandas as pd
+from clases import DataFrameManager
+from clases import DataCleaner
 
-archivo = dataFrameManager()
-cleaner = dataCleaner()
+#dfFile = DataFrameManager("../datos/BaseUnificadaEstaciones.csv")
+dfFile = DataFrameManager("../datos/Datos.csv")
+cleaner = DataCleaner()
+dfFile.set_dependent_variables(["Compro"])
+dfFile.set_independent_variables(["Pais","Edad","Salario"])
 
-archivo.setIndependentValues(cleaner.transCategoricalData(archivo.getIndependentValues(),0))
-archivo.setIndependentValues(cleaner.transCategoricalData(archivo.getIndependentValues(),1))
-
-print(archivo.getIndependentValues())
-print(archivo.getDependentValues())
+print(dfFile.get_independent_variables())
+print("aaaaa")
+print(cleaner.transform_categorical_data(dfFile.get_independent_variables(),["Pais"]))
+print(cleaner.fill_nan_values(dfFile.get_independent_variables(), ["Edad","Salario"]))

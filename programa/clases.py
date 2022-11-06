@@ -1,29 +1,51 @@
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+import numpy as np
+import category_encoders as ce
+from sklearn.impute import SimpleImputer
+import warnings
+warnings.filterwarnings('ignore')
 
 """
 Clase para manejar el archivo csv.
 """
-class dataFrameManager:
-    def __init__(self):
-        self.dF = pd.read_csv("../datos/BaseUnificadaEstaciones.csv")
-        self.__independentValues = self.dF.iloc[:,1:-1].values
-        self.__dependentValues = self.dF.iloc[:, -1].values
+class DataFrameManager:
+
+    def __init__(self, _path):
+        self.__data_frame = pd.read_csv(_path)
+        self.__independent_variables = np.array([])
+        self.__dependent_variables = np.array([])
     
-    def getIndependentValues(self):
-        return self.__independentValues
+    def get_data_frame(self):
+        return self.__data_frame
     
-    def getDependentValues(self):
-        return self.__dependentValues
+    def set_data_frame(self, data_frame):
+        self.__data_frame = data_frame
+
+    def get_independent_variables(self):
+        if(self.__independent_variables.size == 0):
+            raise Exception("Las variables independientes no fueron inicializadas")
+        return self.__independent_variables
     
-    def setIndependentValues(self, matrix_vals):
-        self.__independentValues = matrix_vals
+    def get_dependent_variables(self):
+        if(self.__dependent_variables.size == 0):
+            raise Exception("Las variables dependientes no fueron inicializadas")
+        return self.__dependent_variables
     
-    def setDependentValues(self, vector_vals):
-        self.__dependentValues = vector_vals
+    def set_independent_variables(self, list_col_names):
+        self.__independent_variables = self.__data_frame.loc[:,list_col_names]
+    
+    def set_dependent_variables(self, list_col_names):
+        self.__dependent_variables = self.__data_frame.loc[:,list_col_names]
 
 
-class dataCleaner:
-    def transCategoricalData(self, matrix_vals, index):
-        matrix_vals = LabelEncoder().fit_transform(matrix_vals[:,index])
-        return matrix_vals
+class DataCleaner:
+
+    def transform_categorical_data(self, data_frame, list_col_names):
+        return ce.OneHotEncoder(cols = list_col_names).fit_transform(data_frame)
+
+    def fill_nan_values(self, data_frame, list_col_names):
+        simple_imputer = SimpleImputer(missing_values = np.nan, strategy = "mean")
+        data_frame.loc[:,list_col_names] = simple_imputer.fit_transform(data_frame.loc[:,list_col_names])
+        return data_frame
+
+        
