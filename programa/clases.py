@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import category_encoders as ce
 from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -47,5 +48,23 @@ class DataCleaner:
         simple_imputer = SimpleImputer(missing_values = np.nan, strategy = "mean")
         data_frame.loc[:,list_col_names] = simple_imputer.fit_transform(data_frame.loc[:,list_col_names])
         return data_frame
+
+class TrainAndTest:
+    def __init__(self, independent_vars_frame, dependent_vars_frame):
+        self.__ind_train, self.__ind_test, self.__dep_train, self.__dep_test = train_test_split(independent_vars_frame, dependent_vars_frame, test_size = 0.2, random_state = 9)
+    
+    def get_indepedent_train_values():
+        return self.__ind_train
+
+    def get_indepedent_test_values():
+        return self.__ind_test
+    
+    def get_depedent_train_values():
+        return self.__dep_train
+
+    def get_depedent_test_values():
+        return self.__dep_test
+    
+
 
         
