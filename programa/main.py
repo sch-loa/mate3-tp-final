@@ -30,10 +30,16 @@ from clases import DataCleaner
 #dfFile = DataFrameManager("../datos/BaseUnificadaEstaciones.csv")
 dfFile = DataFrameManager("../datos/Datos.csv")
 cleaner = DataCleaner()
+
 dfFile.set_dependent_variables(["Compro"])
 dfFile.set_independent_variables(["Pais","Edad","Salario"])
 
+dfFile.set_data_frame(cleaner.fill_nan_values(dfFile.get_independent_variables(), ["Edad","Salario"]))
+dfFile.set_data_frame(cleaner.transform_categorical_data(dfFile.get_independent_variables(),["Pais"]))
+
+dfFile.set_data_frame(cleaner.transform_categorical_data(dfFile.get_dependent_variables(),["Compro"]))
+
+
+
 print(dfFile.get_independent_variables())
-print("aaaaa")
-print(cleaner.transform_categorical_data(dfFile.get_independent_variables(),["Pais"]))
-print(cleaner.fill_nan_values(dfFile.get_independent_variables(), ["Edad","Salario"]))
+print(dfFile.get_dependent_variables())
