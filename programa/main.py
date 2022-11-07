@@ -13,11 +13,21 @@ Hecho por Loana Abril Schleich Garcia, entregado el dia xx/11/22.
     15 columnas con datos de distintos sujetos relacionados
     a su corporalidad, listados a continuación de forma ordenada:
     
-    densidad corporal, grasa corporal, edad, peso, estatura, cuello,
-    pecho, abdomen, cadera, muslo, rodilla, tobillo, bíceps,
-    antebrazo, muñeca.
-    
-    Las últimas 10 columnas anteriores corresponden a medidas corporales.
+    density: densidad corporal, relación entre la masa de un cuerpo y el volumen que ocupa.
+    fat: grasa corporal
+    age: edad
+    weight: peso del sujeto
+    height: altura del sujeto
+    neck: medida de la circunferencia del cuello
+    chest: ídem anterior, del pecho
+    abdomen: ídem anterior, del abdomen
+    hip: ídem anterior, pero de la cadera
+    thigh: ídem anterior, pero del muslo
+    knee: ídem anterior, pero de la rodilla
+    ankle: ídem anterior, del tobillo.
+    bicep: ídem, bícep
+    forearm: ídem, antebrazo
+    wrist: ídem, muñeca
     
     Las unidades son ignorables para la realización de los cálculos, pues se asume que
     se usan las mismas para cada columna.
@@ -46,10 +56,17 @@ Hecho por Loana Abril Schleich Garcia, entregado el dia xx/11/22.
     pudiendo haber tendencias producto de factores externos, son caracteristicas que se desarrollan
     a medida que un ser vivo crece. Entonces es posible definir una tendencia dentro de un rango etario.
 """
+from matplotlib import pyplot as plt
 
 from clases import DataFrameManager
 from clases import DataCleaner
 from clases import TrainAndTest
+
+from sklearn.metrics import r2_score
+
+###############################
+#PREPROCESAMIENTO DE LOS DATOS#
+###############################
 
 #Creo objeto para manejar el conjunto de datos
 data_frame = DataFrameManager("../datos/measures.csv", ";")
@@ -62,11 +79,22 @@ dependent_vars = data_frame.get_sub_data_frame([3])
 independent_vars = DataCleaner().fill_nan_values(independent_vars)
 dependent_vars = DataCleaner().fill_nan_values(dependent_vars)
 
-print(data_frame.get_data_frame())
-print(dependent_vars)
-print(independent_vars)
-
-
 tt = TrainAndTest(independent_vars, dependent_vars)
+#tt.scale_all_data()
 
-print(tt.scale_data(tt.get_indepedent_train_values()))
+####################
+#GRAFICO RESULTADOS#
+####################
+
+tt.compare_train_and_test().plot(kind = "bar", figsize = (10,5))
+plt.title("Diferencia entre los valores reales y los de la predicción")
+plt.show()
+
+plt.scatter(tt.get_dependent_test_values(), tt.get_predict())
+plt.plot(tt.get_dependent_test_values(),tt.get_predict())
+plt.xlabel("Actual")
+plt.ylabel("Predicción")
+plt.title("Predicción usando Regresión Lineal Múltiple")
+plt.show()
+
+print(r2_score(tt.get_dependent_test_values(), tt.get_predict())*100)
