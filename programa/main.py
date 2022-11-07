@@ -46,28 +46,27 @@ Hecho por Loana Abril Schleich Garcia, entregado el dia xx/11/22.
     pudiendo haber tendencias producto de factores externos, son caracteristicas que se desarrollan
     a medida que un ser vivo crece. Entonces es posible definir una tendencia dentro de un rango etario.
 """
+
 from clases import DataFrameManager
 from clases import DataCleaner
 from clases import TrainAndTest
 
-#dfFile = DataFrameManager("../datos/BaseUnificadaEstaciones.csv")
-dfFile = DataFrameManager("../datos/Datos.csv")
-cleaner = DataCleaner()
+#Creo objeto para manejar el conjunto de datos
+data_frame = DataFrameManager("../datos/measures.csv", ";")
+
+#Creo subconjuntos de variables independientes y dependientes.
+independent_vars = data_frame.get_sub_data_frame(list(range(4,16)))
+dependent_vars = data_frame.get_sub_data_frame([3])
+
+#Limpio datos numéricos en caso de que hayan valores nulos
+independent_vars = DataCleaner().fill_nan_values(independent_vars)
+dependent_vars = DataCleaner().fill_nan_values(dependent_vars)
+
+print(data_frame.get_data_frame())
+print(dependent_vars)
+print(independent_vars)
 
 
+tt = TrainAndTest(independent_vars, dependent_vars)
 
-dfFile.set_data_frame(cleaner.fill_nan_values(dfFile.get_data_frame(), ["Edad","Salario"]))
-dfFile.set_data_frame(cleaner.transform_categorical_data(dfFile.get_data_frame(),["Pais"]))
-
-dfFile.set_data_frame(cleaner.transform_categorical_data(dfFile.get_data_frame(),["Compro"]))
-
-dfFile.set_dependent_variables(["Compro_1", "Compro_2"])
-dfFile.set_independent_variables(["Pais_1", "Pais_2", "Pais_3","Edad","Salario"])
-
-print(dfFile.get_data_frame())
-print(dfFile.get_independent_variables())
-print(dfFile.get_dependent_variables())
-
-tt = TrainAndTest(dfFile.get_independent_variables(),dfFile.get_dependent_variables())
-print("#####################################")
-print(tt.get_indepedent_train_values())
+print(tt.scale_data(tt.get_indepedent_train_values()))
