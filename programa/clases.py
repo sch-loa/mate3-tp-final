@@ -31,10 +31,12 @@ class DataFrameManager:
     def get_sub_data_frame(self, list_of_colums):
         return self.__data_frame.iloc[:,list_of_colums]
     
+    #Exporta un conjunto de datos en formato de archivo csv.
     def export_data_frame(self, data_set, name):
         if(not isinstance(data_set, pd.DataFrame)):
             data_set = pd.DataFrame(data_set)
         data_set.to_csv("./" + name + ".csv", encoding = "utf-8")
+
 
 ########################################
 # Limpiador de los datos del DataFrame #
@@ -48,6 +50,7 @@ class DataCleaner:
             simple_imputer = SimpleImputer(missing_values = np.nan, strategy = "mean")
             data_frame = simple_imputer.fit_transform(data_frame)
         return data_frame
+
 
 #####################################################
 # Manejador de variables de entrenamiento y pruebas #
@@ -74,12 +77,6 @@ class TrainAndTest:
     #Retorna el conjunto de prueba de las variables dependientes.
     def get_dependent_test_values(self):
         return self.__dep_test
-
-    def scale_all_data(self):
-        self.__ind_train = StandardScaler().fit_transform(self.__ind_train)
-        self.__ind_test = StandardScaler().fit_transform(self.__ind_test)
-        self.__dep_train = StandardScaler().fit_transform(self.__dep_train)
-        self.__dep_test = StandardScaler().fit_transform(self.__dep_test)
    
     #Retorna la predicción obtenida a partir de los conjuntos de prueba.
     def get_predict(self):
