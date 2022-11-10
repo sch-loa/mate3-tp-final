@@ -129,7 +129,10 @@ plt.show()
 #################################
 
 #Creo subconjuntos de variables independientes y dependientes.
-independent_vars = data_frame.get_sub_data_frame([1,2,3,5,6,7,8,9,10,11,12,13,14,15])
+i = [1,2,3]
+i.extend(list(range(5,16)))
+
+independent_vars = data_frame.get_sub_data_frame(i)
 dependent_vars = data_frame.get_sub_data_frame([4])
 
 #Separo variables dependientes e independientes en conjuntos de prueba y entrenamiento.
