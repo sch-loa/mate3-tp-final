@@ -22,6 +22,10 @@ class DataFrameManager:
     def get_data_frame(self):
         return self.__data_frame
     
+    #Cambia el DataFrame actual por el conjunto pasado como parámetro.
+    def set_data_frame(self, data_frame):
+        self.__data_frame = pd.DataFrame(data_frame)
+
     #Retorna todas las filas de una partición del DataFrame,
     #pasando como parámetro una lista con los índices de las columnas.
     def get_sub_data_frame(self, list_of_colums):
@@ -35,8 +39,9 @@ class DataCleaner:
     #Retorna el DataFrame pasado como parámetro, modificando las filas
     #que tienen valores NaN con el método del valor medio.
     def fill_nan_values(self, data_frame):
-        simple_imputer = SimpleImputer(missing_values = np.nan, strategy = "mean")
-        data_frame = simple_imputer.fit_transform(data_frame)
+        if(data_frame.isnull().values.any()):
+            simple_imputer = SimpleImputer(missing_values = np.nan, strategy = "mean")
+            data_frame = simple_imputer.fit_transform(data_frame)
         return data_frame
 
 #####################################################
@@ -47,7 +52,7 @@ class TrainAndTest:
     #Particiona la matriz de variables independientes y el vector de variables
     #dependientes en sus correspondientes conjuntos de entrenamiento y prueba.
     def __init__(self, independent_vars, dependent_vars):       
-        self.__ind_train, self.__ind_test, self.__dep_train, self.__dep_test = train_test_split(independent_vars, dependent_vars, test_size = 0.2, random_state = 0)
+        self.__ind_train, self.__ind_test, self.__dep_train, self.__dep_test = train_test_split(independent_vars.values, dependent_vars.values, test_size = 0.2, random_state = 0)
     
     #Retorna el conjunto de entrenamiento de las variables independientes.
     def get_independent_train_values(self):
