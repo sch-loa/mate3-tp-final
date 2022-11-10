@@ -30,6 +30,11 @@ class DataFrameManager:
     #pasando como parámetro una lista con los índices de las columnas.
     def get_sub_data_frame(self, list_of_colums):
         return self.__data_frame.iloc[:,list_of_colums]
+    
+    def export_data_frame(self, data_set, name):
+        if(not isinstance(data_set, pd.DataFrame)):
+            data_set = pd.DataFrame(data_set)
+        data_set.to_csv("./" + name + ".csv", encoding = "utf-8")
 
 ########################################
 # Limpiador de los datos del DataFrame #
@@ -83,6 +88,6 @@ class TrainAndTest:
     
     #Retorna un DataFrame con los datos de prueba y los datos obtenidos
     #a partir de las predicciones como columnas.
-    def compare_test_and_predict(self):
+    def compare_test_and_predict_vals(self):
         return pd.DataFrame({"Actual": np.reshape(self.__dep_test.flatten(), -1), "Prediccion": np.reshape(np.round_(self.get_predict(), decimals = 2), -1)})
     
