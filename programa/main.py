@@ -76,9 +76,9 @@ data_frame.set_data_frame(DataCleaner().fill_nan_values(data_frame.get_data_fram
 pesos = data_frame.get_sub_data_frame([4])
 mean_w = str(np.round_(np.mean(pesos), decimals = 2)[0])
 
-_, ax = plt.subplots(figsize=(8,6))
+_, ax = plt.subplots(figsize=(7,5))
 ax.hist(pesos, color = "indianred")
-plt.text(314, 76, s= "\n Peso Medio: " + mean_w +" \n", size=8, ha="left", va="bottom", bbox=dict(boxstyle="square", ec=(1.0, 0.7, 0.5), fc=(1.0, 0.9, 0.8),)).set_bbox({"facecolor":"white", "edgecolor":"black"})
+plt.text(308, 76, s= "\n Peso Medio: " + mean_w +" \n", size=8, ha="left", va="bottom", bbox=dict(boxstyle="square", ec=(1.0, 0.7, 0.5), fc=(1.0, 0.9, 0.8),)).set_bbox({"facecolor":"white", "edgecolor":"black"})
 
 plt.title("Variación del Peso")
 plt.show()
